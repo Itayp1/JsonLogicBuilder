@@ -22,7 +22,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
 
   const operation = findOperationByType(operationType);
   if (!operation) return null;
-  
+
   // Calculate the nesting level to add appropriate visual cues
   const nestingLevel = path.length;
 
@@ -42,7 +42,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
       isOver: !!monitor.isOver({ shallow: true }),
     }),
   }));
-  
+
   // Drop zones for different value indices
   const [{ isOver: isOver1 }, drop1] = useDrop(() => ({
     accept: 'operation',
@@ -85,11 +85,11 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
 
   const handleAddChild = (childType: string, defaultValue: any, specificIndex?: number) => {
     const newValue = { [childType]: defaultValue };
-    
+
     // For array values like conditions, then/else blocks
     if (Array.isArray(node[operationType])) {
       const updatedArray = [...node[operationType]];
-      
+
       // If a specific index is provided, replace that position with the new operation
       if (specificIndex !== undefined && specificIndex < updatedArray.length) {
         updatedArray[specificIndex] = newValue;
@@ -97,7 +97,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
         // Otherwise append to the array
         updatedArray.push(newValue);
       }
-      
+
       onUpdate([...path, operationType], updatedArray);
     }
   };
@@ -114,7 +114,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
         default: return 'bg-opacity-50 border-opacity-50';
       }
     };
-    
+
     // Use predefined colors with opacity based on nesting level
     switch (operation.category) {
       case 'logic': return `bg-blue-50 border border-blue-200 ${getOpacity()}`;
@@ -157,7 +157,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
-            
+
             {/* Condition */}
             <div className="mb-3">
               <div className="text-sm font-medium text-neutral-600 mb-2">Condition:</div>
@@ -187,7 +187,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                 )}
               </div>
             </div>
-            
+
             {/* Then */}
             <div className="mb-3">
               <div className="text-sm font-medium text-neutral-600 mb-2">Then:</div>
@@ -233,7 +233,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                 )}
               </div>
             </div>
-            
+
             {/* Else */}
             <div>
               <div className="text-sm font-medium text-neutral-600 mb-2">Else:</div>
@@ -333,7 +333,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
-            
+
             {Array.isArray(value) && (
               <div className="flex flex-col gap-2">
                 <div className="grid grid-cols-2 gap-3">
@@ -386,7 +386,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                       </div>
                     )}
                   </div>
-                  
+
                   <div className="border rounded-md p-2 border-neutral-200 relative">
                     <div className="absolute -top-3 left-2 bg-white px-1 text-xs text-neutral-500">Value 2</div>
                     {value.length > 1 && typeof value[1] === 'object' ? (
@@ -461,7 +461,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
-            
+
             <div className="space-y-2 mt-1">
               {Array.isArray(value) && value.map((item, index) => (
                 <div key={index} className="border rounded-md p-2 border-neutral-200">
@@ -509,7 +509,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                   )}
                 </div>
               ))}
-              
+
               <Button 
                 variant="outline" 
                 size="sm" 
@@ -541,7 +541,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
-            
+
             {Array.isArray(value) && (
               <div className="space-y-3">
                 <div>
@@ -592,7 +592,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                     )}
                   </div>
                 </div>
-                
+
                 <div>
                   <div className="text-sm font-medium text-neutral-600 mb-1">Logic:</div>
                   <div className="border rounded-md p-2 border-neutral-200">
@@ -637,7 +637,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
-            
+
             <div className="border rounded-md p-2 border-neutral-200">
               {Array.isArray(value) && value.length > 0 && typeof value[0] === 'object' ? (
                 <LogicNode 
@@ -708,7 +708,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
-            
+
             {Array.isArray(value) && (
               <div className="flex flex-col gap-2">
                 <div className="border rounded-md p-3 border-neutral-200">
@@ -759,7 +759,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                       )}
                     </div>
                   ))}
-                  
+
                   {/* Button to add more arguments if needed */}
                   <Button 
                     variant="outline" 
@@ -775,7 +775,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                 </div>
               </div>
             )}
-            
+
             {/* For non-array values, display the JSON */}
             {!Array.isArray(value) && (
               <div className="text-sm text-neutral-500 p-2 bg-neutral-50 rounded-md">
@@ -795,11 +795,11 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
     }
     return '';
   };
-  
+
   // Add a left border based on nesting level
   const getBorderClass = () => {
     if (nestingLevel === 0) return '';
-    
+
     // Use predefined border classes based on nesting level
     switch (nestingLevel) {
       case 1: return 'border-l-4 border-l-blue-400';
@@ -809,16 +809,16 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
       default: return 'border-l-4 border-l-rose-400';
     }
   };
-  
+
   // Increase padding based on nesting level for better readability
   const getPaddingClass = () => {
     return nestingLevel > 0 ? 'p-4' : 'p-5';
   };
-  
+
   // Increase margin as nesting gets deeper
   const getMarginClass = () => {
     if (nestingLevel === 0) return '';
-    
+
     // Use predefined margin classes
     switch (Math.min(nestingLevel, 4)) {
       case 1: return 'my-2';
@@ -828,7 +828,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
       default: return 'my-5';
     }
   };
-  
+
   return (
     <div 
       className={`
@@ -840,20 +840,20 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
         rounded-md
       `}
     >
-      <div className="flex items-start">
+      <div className="flex items-start relative">
         <div className={`${getIconColorClasses()} rounded p-1.5 mr-3 mt-1`}>
           <i className={`ri-${operation.icon}`}></i>
         </div>
         {renderNodeContent()}
       </div>
-      
+
       {/* Add a nesting indicator for debug purposes */}
       {nestingLevel > 0 && (
         <div className="mt-1 text-xs text-neutral-400 text-right">
           Nesting level: {nestingLevel}
         </div>
       )}
-      
+
       {/* Add immediate visual feedback for drag operations */}
       <div className="operation-drop-indicator" style={{ opacity: isOver ? 1 : 0 }}>
         <div className="h-1 bg-blue-400 rounded-full animate-pulse"></div>
