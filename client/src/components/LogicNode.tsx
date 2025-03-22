@@ -319,8 +319,8 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
       case '!=':
       case '!==':
         return (
-          <div className="flex-1">
-            <div className="flex items-center mb-2">
+          <div className="flex-1 space-y-4">
+            <div className="flex items-center">
               <h4 className="font-medium text-neutral-800">
                 {operation.name}
               </h4>
@@ -838,6 +838,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
         rounded-md
         w-full
         min-w-[300px]
+        flex flex-col
         break-words
         shadow-sm
         border border-neutral-200
