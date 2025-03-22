@@ -838,9 +838,12 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
         ${getPaddingClass()}
         ${getMarginClass()}
         rounded-md
+        max-w-full
+        overflow-x-auto
+        break-words
       `}
     >
-      <div className="flex items-start relative">
+      <div className="flex flex-wrap items-start relative">
         <div className={`${getIconColorClasses()} rounded p-1.5 mr-3 mt-1`}>
           <i className={`ri-${operation.icon}`}></i>
         </div>
