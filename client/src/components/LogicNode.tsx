@@ -853,6 +853,11 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
           Nesting level: {nestingLevel}
         </div>
       )}
+      
+      {/* Add immediate visual feedback for drag operations */}
+      <div className="operation-drop-indicator" style={{ opacity: isOver ? 1 : 0 }}>
+        <div className="h-1 bg-blue-400 rounded-full animate-pulse"></div>
+      </div>
     </div>
   );
 }

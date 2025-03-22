@@ -44,8 +44,8 @@ export default function OperationCard({ operation, onAddOperation }: OperationCa
         <TooltipTrigger asChild>
           <div 
             ref={drag}
-            className={`operation-card ${getBgColorClass()} rounded-md p-3 cursor-grab active:cursor-grabbing ${
-              isDragging ? 'opacity-50' : ''
+            className={`operation-card ${getBgColorClass()} rounded-md p-3 cursor-grab active:cursor-grabbing transform transition-all duration-150 ${
+              isDragging ? 'opacity-50 scale-95' : 'hover:scale-102'
             }`}
             draggable
             onClick={onAddOperation}
