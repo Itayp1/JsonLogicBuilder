@@ -21,16 +21,28 @@ export default function JsonLogicBuilder() {
   
   // Function to create a complex example with nested operations
   const createComplexExample = () => {
-    // Create the structure: addition(max([12345]), multiply(5, 2))
+    // Create a complex example with nested operations including the custom "length" operation
+    // This builds a logic that checks if the length of value in variable "number" is equal to 
+    // the result of addition(max([data.threshold]), multiply(5, 2))
     const exampleLogic = {
-      "+": [
-        { "max": [12345] },
-        { "*": [5, 2] }
+      "==": [
+        { "length": [{ "var": "number" }] },
+        { "+": [
+            { "max": [{ "var": "threshold" }] },
+            { "*": [5, 2] }
+          ]
+        }
       ]
     };
     
     // Update the JSON logic
     setJsonLogic(exampleLogic);
+    
+    // Set test data that includes both variables
+    setTestData(JSON.stringify({
+      "number": 12345,
+      "threshold": 3
+    }, null, 2));
   };
 
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -64,7 +76,8 @@ export default function JsonLogicBuilder() {
     <div className="flex flex-col h-screen">
       <Header 
         onImport={() => setIsImportModalOpen(true)} 
-        onCopyJson={handleCopyJson} 
+        onCopyJson={handleCopyJson}
+        onCreateExample={createComplexExample}
       />
       
       <main className="flex-1 flex flex-col md:flex-row overflow-hidden">
