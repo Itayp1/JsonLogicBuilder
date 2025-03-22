@@ -351,8 +351,8 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                         ref={drop1}
                         className={`${isOver1 ? 'bg-primary/5 border-primary' : ''} rounded-md transition-colors duration-150`}
                       >
-                        <div className="flex items-center justify-between py-2">
-                          <div className="flex items-center gap-2 w-full">
+                        <div className="flex flex-col py-2">
+                          <div className="flex flex-col sm:flex-row gap-2 w-full">
                             <Input 
                               value={value[0]?.toString() || ''} 
                               onChange={(e) => {
@@ -370,7 +370,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                               type="button"
                               variant="outline"
                               size="sm"
-                              className="flex-shrink-0 h-8 px-2"
+                              className="flex-shrink-0 h-8 sm:w-auto w-full mt-1 sm:mt-0"
                               title="Add operation as value"
                               onClick={() => {
                                 // Replace with a placeholder operation
@@ -401,8 +401,8 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                         ref={drop2}
                         className={`${isOver2 ? 'bg-primary/5 border-primary' : ''} rounded-md transition-colors duration-150`}
                       >
-                        <div className="flex items-center justify-between py-2">
-                          <div className="flex items-center gap-2 w-full">
+                        <div className="flex flex-col py-2">
+                          <div className="flex flex-col sm:flex-row gap-2 w-full">
                             <Input 
                               value={value[1]?.toString() || ''} 
                               onChange={(e) => {
@@ -420,7 +420,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                               type="button"
                               variant="outline"
                               size="sm"
-                              className="flex-shrink-0 h-8 px-2"
+                              className="flex-shrink-0 h-8 sm:w-auto w-full mt-1 sm:mt-0"
                               title="Add operation as value"
                               onClick={() => {
                                 // Replace with a placeholder operation
@@ -473,9 +473,9 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                       onRemove={onRemove}
                     />
                   ) : (
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium mr-2">Value {index + 1}:</span>
-                      <div className="flex items-center gap-2 flex-1">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                      <span className="text-sm font-medium mb-1 sm:mb-0 sm:mr-2">Value {index + 1}:</span>
+                      <div className="flex flex-col sm:flex-row gap-2 w-full">
                         <Input 
                           value={item?.toString() || ''} 
                           onChange={(e) => {
@@ -493,7 +493,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                           type="button" 
                           variant="outline"
                           size="sm"
-                          className="h-8 px-2"
+                          className="h-8 sm:w-auto w-full mt-1 sm:mt-0"
                           title="Replace with operation"
                           onClick={() => {
                             // Create a placeholder operation to replace this value
@@ -559,32 +559,34 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                         ref={drop1}
                         className={`${isOver1 ? 'bg-primary/5 border-primary' : ''} rounded-md transition-colors duration-150`}
                       >
-                        <div className="flex items-center gap-2 w-full">
-                          <Input 
-                            value={value[0]?.toString() || ''} 
-                            onChange={(e) => {
-                              const newValue = [...value];
-                              newValue[0] = e.target.value;
-                              onUpdate([...path, operationType], newValue);
-                            }}
-                            className="flex-1 text-sm"
-                            placeholder="Array variable (e.g. items)"
-                          />
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            className="flex-shrink-0 h-8 px-2"
-                            title="Add operation as value"
-                            onClick={() => {
-                              // Replace with a placeholder operation
-                              const newValue = [...value];
-                              newValue[0] = { "var": "" };
-                              onUpdate([...path, operationType], newValue);
-                            }}
-                          >
-                            <span className="text-xs">+ Add operation</span>
-                          </Button>
+                        <div className="flex flex-col py-2">
+                          <div className="flex flex-col sm:flex-row gap-2 w-full">
+                            <Input 
+                              value={value[0]?.toString() || ''} 
+                              onChange={(e) => {
+                                const newValue = [...value];
+                                newValue[0] = e.target.value;
+                                onUpdate([...path, operationType], newValue);
+                              }}
+                              className="flex-1 text-sm"
+                              placeholder="Array variable (e.g. items)"
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              className="flex-shrink-0 h-8 sm:w-auto w-full mt-1 sm:mt-0"
+                              title="Add operation as value"
+                              onClick={() => {
+                                // Replace with a placeholder operation
+                                const newValue = [...value];
+                                newValue[0] = { "var": "" };
+                                onUpdate([...path, operationType], newValue);
+                              }}
+                            >
+                              <span className="text-xs">+ Add operation</span>
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     )}
@@ -645,7 +647,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                   onRemove={onRemove}
                 />
               ) : (
-                <div className="flex items-center gap-2 w-full">
+                <div className="flex flex-col sm:flex-row gap-2 w-full">
                   <Input 
                     value={value[0]?.toString() || ''} 
                     onChange={(e) => {
@@ -664,7 +666,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                     type="button"
                     variant="outline"
                     size="sm"
-                    className="flex-shrink-0 h-8 px-2"
+                    className="flex-shrink-0 h-8 sm:w-auto w-full mt-1 sm:mt-0"
                     title="Add operation as value"
                     onClick={() => {
                       // Replace with a placeholder operation
@@ -724,7 +726,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                           onRemove={onRemove}
                         />
                       ) : (
-                        <div className="flex items-center gap-2 w-full">
+                        <div className="flex flex-col sm:flex-row gap-2 w-full">
                           <Input 
                             value={item?.toString() || ''} 
                             onChange={(e) => {
@@ -742,7 +744,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                             type="button" 
                             variant="outline"
                             size="sm"
-                            className="flex-shrink-0 h-8 px-2"
+                            className="flex-shrink-0 h-8 sm:w-auto w-full mt-1 sm:mt-0"
                             title="Add operation as value"
                             onClick={() => {
                               // Replace with a placeholder operation
