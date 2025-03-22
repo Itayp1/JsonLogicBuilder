@@ -103,24 +103,33 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
   };
 
   const getCategoryColorClasses = () => {
+    // Adjust background opacity based on nesting level for better visual hierarchy
+    const getOpacity = () => {
+      if (nestingLevel === 0) return 'bg-opacity-100 border-opacity-100';
+      const opacity = Math.max(100 - nestingLevel * 15, 50);
+      return `bg-opacity-${opacity} border-opacity-${opacity}`;
+    };
+    
+    // Use predefined colors with opacity based on nesting level
     switch (operation.category) {
-      case 'logic': return 'bg-blue-50 border-blue-200';
-      case 'data': return 'bg-green-50 border-green-200';
-      case 'numeric': return 'bg-purple-50 border-purple-200';
-      case 'array': return 'bg-amber-50 border-amber-200';
-      case 'string': return 'bg-rose-50 border-rose-200';
-      default: return 'bg-gray-50 border-gray-200';
+      case 'logic': return `bg-blue-50 border border-blue-200 ${getOpacity()}`;
+      case 'data': return `bg-green-50 border border-green-200 ${getOpacity()}`;
+      case 'numeric': return `bg-purple-50 border border-purple-200 ${getOpacity()}`;
+      case 'array': return `bg-amber-50 border border-amber-200 ${getOpacity()}`;
+      case 'string': return `bg-rose-50 border border-rose-200 ${getOpacity()}`;
+      default: return `bg-gray-50 border border-gray-200 ${getOpacity()}`;
     }
   };
 
   const getIconColorClasses = () => {
+    // Make icons more prominent and consistently visible across nesting levels
     switch (operation.category) {
-      case 'logic': return 'bg-blue-100 text-blue-600';
-      case 'data': return 'bg-green-100 text-green-600';
-      case 'numeric': return 'bg-purple-100 text-purple-600';
-      case 'array': return 'bg-amber-100 text-amber-600';
-      case 'string': return 'bg-rose-100 text-rose-600';
-      default: return 'bg-gray-100 text-gray-600';
+      case 'logic': return 'bg-blue-100 text-blue-700 shadow-sm';
+      case 'data': return 'bg-green-100 text-green-700 shadow-sm';
+      case 'numeric': return 'bg-purple-100 text-purple-700 shadow-sm';
+      case 'array': return 'bg-amber-100 text-amber-700 shadow-sm';
+      case 'string': return 'bg-rose-100 text-rose-700 shadow-sm';
+      default: return 'bg-gray-100 text-gray-700 shadow-sm';
     }
   };
 
@@ -645,15 +654,18 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
         // For our custom operations and other operations that take array arguments
         return (
           <div className="flex-1">
-            <div className="flex items-center mb-2">
-              <h4 className="font-medium text-neutral-800">
-                {operation ? operation.name : operationType}
-                {operation?.isCustom && (
-                  <span className="ml-2 text-xs px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded-full">
-                    Custom
-                  </span>
-                )}
-              </h4>
+            <div className="flex items-center mb-3">
+              <div>
+                <h4 className="font-medium text-neutral-800 flex items-center">
+                  {operation ? operation.name : operationType}
+                  {operation?.isCustom && (
+                    <span className="ml-2 text-xs px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded-full">
+                      Custom
+                    </span>
+                  )}
+                </h4>
+                <p className="text-xs text-neutral-500 mt-1">{operation?.description || 'Apply operation to values'}</p>
+              </div>
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -748,10 +760,37 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
     return '';
   };
   
-  // Add a left border with increasing intensity based on nesting level
+  // Add a left border based on nesting level
   const getBorderClass = () => {
-    const intensity = Math.min(nestingLevel * 100, 800);
-    return nestingLevel > 0 ? `border-l-4 border-l-primary-${intensity}` : '';
+    if (nestingLevel === 0) return '';
+    
+    // Use predefined border classes based on nesting level
+    switch (nestingLevel) {
+      case 1: return 'border-l-4 border-l-blue-400';
+      case 2: return 'border-l-4 border-l-purple-400';
+      case 3: return 'border-l-4 border-l-amber-400';
+      case 4: return 'border-l-4 border-l-green-400';
+      default: return 'border-l-4 border-l-rose-400';
+    }
+  };
+  
+  // Increase padding based on nesting level for better readability
+  const getPaddingClass = () => {
+    return nestingLevel > 0 ? 'p-4' : 'p-5';
+  };
+  
+  // Increase margin as nesting gets deeper
+  const getMarginClass = () => {
+    if (nestingLevel === 0) return '';
+    
+    // Use predefined margin classes
+    switch (Math.min(nestingLevel, 4)) {
+      case 1: return 'my-2';
+      case 2: return 'my-3';
+      case 3: return 'my-4';
+      case 4: 
+      default: return 'my-5';
+    }
   };
   
   return (
@@ -760,8 +799,9 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
         ${getCategoryColorClasses()} 
         ${getShadowClass()}
         ${getBorderClass()}
-        rounded-md p-4
-        ${nestingLevel > 0 ? 'my-2' : ''}
+        ${getPaddingClass()}
+        ${getMarginClass()}
+        rounded-md
       `}
     >
       <div className="flex items-start">
