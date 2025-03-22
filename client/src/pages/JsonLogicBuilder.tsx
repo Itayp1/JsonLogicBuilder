@@ -18,6 +18,20 @@ export default function JsonLogicBuilder() {
     testLogic,
     validateLogic
   } = useJsonLogicBuilder();
+  
+  // Function to create a complex example with nested operations
+  const createComplexExample = () => {
+    // Create the structure: addition(max([12345]), multiply(5, 2))
+    const exampleLogic = {
+      "+": [
+        { "max": [12345] },
+        { "*": [5, 2] }
+      ]
+    };
+    
+    // Update the JSON logic
+    setJsonLogic(exampleLogic);
+  };
 
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [testData, setTestData] = useState<string>('{"age": 25, "name": "John"}');

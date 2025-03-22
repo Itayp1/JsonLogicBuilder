@@ -349,6 +349,12 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                             ref={drop1}
                             className={`ml-2 h-6 w-6 rounded-full flex items-center justify-center border ${isOver1 ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
                             title="Drop an operation here"
+                            onClick={() => {
+                              // Replace with a placeholder operation
+                              const newValue = [...value];
+                              newValue[0] = { "var": "" };
+                              onUpdate([...path, operationType], newValue);
+                            }}
                           >
                             <span className="text-xs">+</span>
                           </div>
@@ -386,6 +392,12 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                             ref={drop2}
                             className={`ml-2 h-6 w-6 rounded-full flex items-center justify-center border ${isOver2 ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
                             title="Drop an operation here"
+                            onClick={() => {
+                              // Replace with a placeholder operation
+                              const newValue = [...value];
+                              newValue[1] = { "var": "" };
+                              onUpdate([...path, operationType], newValue);
+                            }}
                           >
                             <span className="text-xs">+</span>
                           </div>
@@ -524,6 +536,12 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                           ref={drop1}
                           className={`h-6 w-6 rounded-full flex items-center justify-center border ${isOver1 ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
                           title="Drop an operation here"
+                          onClick={() => {
+                            // Replace with a placeholder operation
+                            const newValue = [...value];
+                            newValue[0] = { "var": "" };
+                            onUpdate([...path, operationType], newValue);
+                          }}
                         >
                           <span className="text-xs">+</span>
                         </div>
@@ -605,6 +623,12 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                     ref={drop1}
                     className={`h-6 w-6 rounded-full flex items-center justify-center border ${isOver1 ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
                     title="Drop an operation here"
+                    onClick={() => {
+                      // Replace with a placeholder operation
+                      const newValue = [...(Array.isArray(value) ? value : [])];
+                      newValue[0] = { "var": "" };
+                      onUpdate([...path, operationType], newValue);
+                    }}
                   >
                     <span className="text-xs">+</span>
                   </div>
