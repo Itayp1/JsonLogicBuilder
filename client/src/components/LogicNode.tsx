@@ -161,7 +161,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
             {/* Condition */}
             <div className="mb-3">
               <div className="text-sm font-medium text-neutral-600 mb-2">Condition:</div>
-              <div className="border rounded-md p-3 border-neutral-200 relative min-w-[300px] flex-1">
+              <div className="border rounded-md p-3 border-neutral-200 relative flex-1">
                 <div className="absolute -top-3 left-2 bg-white px-1 text-xs text-neutral-500">Condition</div>
                 {Array.isArray(value) && value.length > 0 && typeof value[0] === 'object' ? (
                   <LogicNode 
@@ -191,7 +191,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
             {/* Then */}
             <div className="mb-3">
               <div className="text-sm font-medium text-neutral-600 mb-2">Then:</div>
-              <div className="border rounded-md p-3 border-neutral-200 relative min-w-[300px] flex-1">
+              <div className="border rounded-md p-3 border-neutral-200 relative flex-1">
                 <div className="absolute -top-3 left-2 bg-white px-1 text-xs text-neutral-500">Then</div>
                 {Array.isArray(value) && value.length > 1 ? (
                   typeof value[1] === 'object' ? (
@@ -237,7 +237,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
             {/* Else */}
             <div>
               <div className="text-sm font-medium text-neutral-600 mb-2">Else:</div>
-              <div className="border rounded-md p-3 border-neutral-200 relative min-w-[300px] flex-1">
+              <div className="border rounded-md p-3 border-neutral-200 relative flex-1">
                 <div className="absolute -top-3 left-2 bg-white px-1 text-xs text-neutral-500">Else</div>
                 {Array.isArray(value) && value.length > 2 ? (
                   typeof value[2] === 'object' ? (
@@ -336,7 +336,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
 
             {Array.isArray(value) && (
               <div className="flex flex-col gap-3 mt-4 w-full">
-                <div className="border rounded-md p-2 border-neutral-200 relative min-w-[300px] flex-1">
+                <div className="border rounded-md p-2 border-neutral-200 relative flex-1">
                   <div className="absolute -top-3 left-2 bg-white px-1 text-xs text-neutral-500">Value 1</div>
                   {value.length > 0 && typeof value[0] === 'object' ? (
                     <LogicNode 
@@ -386,7 +386,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                   )}
                 </div>
 
-                <div className="border rounded-md p-2 border-neutral-200 relative min-w-[300px] flex-1">
+                <div className="border rounded-md p-2 border-neutral-200 relative flex-1">
                   <div className="absolute -top-3 left-2 bg-white px-1 text-xs text-neutral-500">Value 2</div>
                   {value.length > 1 && typeof value[1] === 'object' ? (
                     <LogicNode 
@@ -462,7 +462,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
 
             <div className="flex flex-col gap-3 mt-4 w-full">
               {Array.isArray(value) && value.map((item, index) => (
-                <div key={index} className="border rounded-md p-2 border-neutral-200 min-w-[300px] flex-1">
+                <div key={index} className="border rounded-md p-2 border-neutral-200 flex-1">
                   {typeof item === 'object' ? (
                     <LogicNode 
                       node={item} 
@@ -544,7 +544,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
                 <div>
                   <div className="text-sm font-medium text-neutral-600 mb-1">Array:</div>
-                  <div className="border rounded-md p-2 border-neutral-200 min-w-[300px] flex-1">
+                  <div className="border rounded-md p-2 border-neutral-200 flex-1">
                     {value.length > 0 && typeof value[0] === 'object' ? (
                       <LogicNode 
                         node={value[0]} 
@@ -593,7 +593,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
 
                 <div>
                   <div className="text-sm font-medium text-neutral-600 mb-1">Logic:</div>
-                  <div className="border rounded-md p-2 border-neutral-200 min-w-[300px] flex-1">
+                  <div className="border rounded-md p-2 border-neutral-200 flex-1">
                     {value.length > 1 && typeof value[1] === 'object' ? (
                       <LogicNode 
                         node={value[1]} 
@@ -636,7 +636,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
               </Button>
             </div>
 
-            <div className="border rounded-md p-2 border-neutral-200 min-w-[300px] flex-1">
+            <div className="border rounded-md p-2 border-neutral-200 flex-1">
               {Array.isArray(value) && value.length > 0 && typeof value[0] === 'object' ? (
                 <LogicNode 
                   node={value[0]} 
@@ -709,7 +709,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
 
             {Array.isArray(value) && (
               <div className="flex flex-col gap-3 mt-4 w-full">
-                <div className="border rounded-md p-3 border-neutral-200 min-w-[300px] flex-1">
+                <div className="border rounded-md p-3 border-neutral-200 flex-1">
                   <div className="font-medium text-sm mb-2">Arguments:</div>
                   {value.map((item, index) => (
                     <div key={index} className="mb-2 border-b pb-2 last:border-0 last:pb-0">
@@ -831,13 +831,11 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
     <div 
       className={`
         ${getCategoryColorClasses()} 
-        ${getShadowClass()}
-        ${getBorderClass()}
+        ${getShadowClass()}        ${getBorderClass()}
         ${getPaddingClass()}
         ${getMarginClass()}
         rounded-md
         w-full
-        min-w-[300px]
         break-words
         transition-all
         duration-200
