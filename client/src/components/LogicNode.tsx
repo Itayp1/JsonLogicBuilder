@@ -335,7 +335,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
             </div>
 
             {Array.isArray(value) && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+              <div className="flex flex-col gap-3 mt-4 w-full">
                 <div className="border rounded-md p-2 border-neutral-200 relative min-w-[300px] flex-1">
                   <div className="absolute -top-3 left-2 bg-white px-1 text-xs text-neutral-500">Value 1</div>
                   {value.length > 0 && typeof value[0] === 'object' ? (
@@ -460,7 +460,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+            <div className="flex flex-col gap-3 mt-4 w-full">
               {Array.isArray(value) && value.map((item, index) => (
                 <div key={index} className="border rounded-md p-2 border-neutral-200 min-w-[300px] flex-1">
                   {typeof item === 'object' ? (
@@ -708,7 +708,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
             </div>
 
             {Array.isArray(value) && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+              <div className="flex flex-col gap-3 mt-4 w-full">
                 <div className="border rounded-md p-3 border-neutral-200 min-w-[300px] flex-1">
                   <div className="font-medium text-sm mb-2">Arguments:</div>
                   {value.map((item, index) => (
@@ -838,13 +838,15 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
         rounded-md
         w-full
         min-w-[300px]
-        flex flex-col
         break-words
-        shadow-sm
-        border border-neutral-200
+        transition-all
+        duration-200
       `}
+      style={{
+        width: `${Math.max(300 + nestingLevel * 50, 300)}px`
+      }}
     >
-      <div className="flex flex-wrap items-start relative">
+      <div className="flex items-start relative gap-2">
         <div className={`${getIconColorClasses()} rounded p-1.5 mr-3 mt-1`}>
           <i className={`ri-${operation.icon}`}></i>
         </div>
