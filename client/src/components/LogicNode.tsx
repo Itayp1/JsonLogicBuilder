@@ -106,8 +106,13 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
     // Adjust background opacity based on nesting level for better visual hierarchy
     const getOpacity = () => {
       if (nestingLevel === 0) return 'bg-opacity-100 border-opacity-100';
-      const opacity = Math.max(100 - nestingLevel * 15, 50);
-      return `bg-opacity-${opacity} border-opacity-${opacity}`;
+      // Use predefined opacity classes to avoid Tailwind purge issues
+      switch (nestingLevel) {
+        case 1: return 'bg-opacity-85 border-opacity-85';
+        case 2: return 'bg-opacity-70 border-opacity-70';
+        case 3: return 'bg-opacity-55 border-opacity-55';
+        default: return 'bg-opacity-50 border-opacity-50';
+      }
     };
     
     // Use predefined colors with opacity based on nesting level

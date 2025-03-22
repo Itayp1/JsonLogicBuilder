@@ -75,8 +75,10 @@ export default function BuilderWorkspace({
         {isEmpty ? (
           <div 
             ref={drop}
-            className={`dropzone border-2 border-dashed border-neutral-300 rounded-lg p-8 bg-white min-h-[60vh] flex flex-col items-center justify-center ${
-              isOver ? "border-primary bg-primary/5" : ""
+            className={`dropzone border-2 border-dashed ${
+              isOver ? "border-primary bg-primary/5" : "border-neutral-300"
+            } rounded-lg p-10 bg-white min-h-[60vh] flex flex-col items-center justify-center transition-all duration-150 ${
+              isOver ? "shadow-md" : "shadow-sm" 
             }`}
           >
             <div className="text-center">
@@ -105,8 +107,12 @@ export default function BuilderWorkspace({
             </div>
           </div>
         ) : (
-          <div className="mt-0 border border-neutral-200 rounded-lg bg-white p-6 shadow-sm overflow-auto">
-            <div className="min-w-[600px]">
+          <div className="mt-0 border border-neutral-200 rounded-lg bg-white shadow-sm overflow-auto">
+            <div className="p-4 border-b border-neutral-200 bg-neutral-50">
+              <h3 className="text-sm font-medium text-neutral-600">Root Operation</h3>
+              <p className="text-xs text-neutral-500 mt-1">This is your main operation. All other operations will be nested inside it.</p>
+            </div>
+            <div className="p-6 min-w-[600px]">
               <LogicNode 
                 node={jsonLogic} 
                 path={[]} 
