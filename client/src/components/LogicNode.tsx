@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Trash2 } from "lucide-react";
-import { operations, findOperationByType } from "@/lib/operations";
-import { useDrop } from "react-dnd";
+import React from 'react';
+import { useDrop } from 'react-dnd';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Trash2 } from 'lucide-react';
+import { findOperationByType } from '@/lib/operations';
 
 interface LogicNodeProps {
   node: any;
@@ -14,6 +13,17 @@ interface LogicNodeProps {
 }
 
 export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeProps) {
+  // Early check to avoid React hooks errors
+  if (!node) return null;
+
+  // Get operation type from node
+  const operationType = Object.keys(node)[0];
+  if (!operationType) return null;
+
+  const operation = findOperationByType(operationType);
+  if (!operation) return null;
+
+  // Main drop zone for the node
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'operation',
     drop: (item: { type: string }, monitor) => {
@@ -30,35 +40,45 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
     }),
   }));
   
-  // For replacing a specific value with an operation
-  const createValueDropRef = (valueIndex: number) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [{ isOver }, ref] = useDrop(() => ({
-      accept: 'operation',
-      drop: (item: { type: string }, monitor) => {
-        if (monitor.isOver({ shallow: true })) {
-          const operationType = item.type;
-          const defaultValue = operationType === 'if' ? [true, "", ""] : [];
-          handleAddChild(operationType, defaultValue, valueIndex);
-        }
-        return undefined;
-      },
-      collect: (monitor) => ({
-        isOver: !!monitor.isOver({ shallow: true }),
-      }),
-    }));
-    
-    return { ref, isOver };
-  };
+  // Drop zones for different value indices
+  const [{ isOver: isOver1 }, drop1] = useDrop(() => ({
+    accept: 'operation',
+    drop: (item: { type: string }) => {
+      const operationType = item.type;
+      const defaultValue = operationType === 'if' ? [true, "", ""] : [];
+      handleAddChild(operationType, defaultValue, 0);
+      return undefined;
+    },
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver({ shallow: true }),
+    }),
+  }));
 
-  if (!node) return null;
+  const [{ isOver: isOver2 }, drop2] = useDrop(() => ({
+    accept: 'operation',
+    drop: (item: { type: string }) => {
+      const operationType = item.type;
+      const defaultValue = operationType === 'if' ? [true, "", ""] : [];
+      handleAddChild(operationType, defaultValue, 1);
+      return undefined;
+    },
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver({ shallow: true }),
+    }),
+  }));
 
-  // Get operation type from node
-  const operationType = Object.keys(node)[0];
-  if (!operationType) return null;
-
-  const operation = findOperationByType(operationType);
-  if (!operation) return null;
+  const [{ isOver: isOver3 }, drop3] = useDrop(() => ({
+    accept: 'operation',
+    drop: (item: { type: string }) => {
+      const operationType = item.type;
+      const defaultValue = operationType === 'if' ? [true, "", ""] : [];
+      handleAddChild(operationType, defaultValue, 2);
+      return undefined;
+    },
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver({ shallow: true }),
+    }),
+  }));
 
   const handleAddChild = (childType: string, defaultValue: any, specificIndex?: number) => {
     const newValue = { [childType]: defaultValue };
@@ -135,8 +155,8 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                   />
                 ) : (
                   <div 
-                    ref={drop}
-                    className={`flex justify-center p-4 text-neutral-500 text-sm border-2 border-dashed ${isOver ? 'border-primary bg-primary/5' : 'border-neutral-300'} rounded-md cursor-pointer`}
+                    ref={drop1}
+                    className={`flex justify-center p-4 text-neutral-500 text-sm border-2 border-dashed ${isOver1 ? 'border-primary bg-primary/5' : 'border-neutral-300'} rounded-md cursor-pointer`}
                   >
                     <div className="text-center">
                       <div className="flex justify-center mb-2">
@@ -167,7 +187,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                   ) : (
                     <div className="flex items-center gap-3">
                       <Input 
-                        value={value[1].toString()} 
+                        value={value[1]?.toString() || ''} 
                         onChange={(e) => {
                           const newValue = [...value];
                           newValue[1] = e.target.value;
@@ -175,22 +195,20 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                         }}
                         className="flex-1"
                       />
-                      {(() => {
-                        const { ref, isOver: isOverRef } = createValueDropRef(1);
-                        return (
-                          <div 
-                            ref={ref}
-                            className={`h-6 w-6 rounded-full flex items-center justify-center border ${isOverRef ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
-                            title="Drop an operation here"
-                          >
-                            <span className="text-xs">+</span>
-                          </div>
-                        );
-                      })()}
+                      <div 
+                        ref={drop2}
+                        className={`h-6 w-6 rounded-full flex items-center justify-center border ${isOver2 ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
+                        title="Drop an operation here"
+                      >
+                        <span className="text-xs">+</span>
+                      </div>
                     </div>
                   )
                 ) : (
-                  <div className="flex justify-center p-4 text-neutral-500 text-sm border-2 border-dashed border-neutral-300 rounded-md">
+                  <div 
+                    ref={drop2}
+                    className={`flex justify-center p-4 text-neutral-500 text-sm border-2 border-dashed ${isOver2 ? 'border-primary bg-primary/5' : 'border-neutral-300'} rounded-md cursor-pointer`}
+                  >
                     <div className="text-center">
                       <p>Drop or enter 'then' value</p>
                     </div>
@@ -215,7 +233,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                   ) : (
                     <div className="flex items-center gap-3">
                       <Input 
-                        value={value[2].toString()} 
+                        value={value[2]?.toString() || ''} 
                         onChange={(e) => {
                           const newValue = [...value];
                           newValue[2] = e.target.value;
@@ -223,22 +241,20 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                         }}
                         className="flex-1"
                       />
-                      {(() => {
-                        const { ref, isOver: isOverRef } = createValueDropRef(2);
-                        return (
-                          <div 
-                            ref={ref}
-                            className={`h-6 w-6 rounded-full flex items-center justify-center border ${isOverRef ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
-                            title="Drop an operation here"
-                          >
-                            <span className="text-xs">+</span>
-                          </div>
-                        );
-                      })()}
+                      <div 
+                        ref={drop3}
+                        className={`h-6 w-6 rounded-full flex items-center justify-center border ${isOver3 ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
+                        title="Drop an operation here"
+                      >
+                        <span className="text-xs">+</span>
+                      </div>
                     </div>
                   )
                 ) : (
-                  <div className="flex justify-center p-4 text-neutral-500 text-sm border-2 border-dashed border-neutral-300 rounded-md">
+                  <div 
+                    ref={drop3}
+                    className={`flex justify-center p-4 text-neutral-500 text-sm border-2 border-dashed ${isOver3 ? 'border-primary bg-primary/5' : 'border-neutral-300'} rounded-md cursor-pointer`}
+                  >
                     <div className="text-center">
                       <p>Drop or enter 'else' value</p>
                     </div>
@@ -329,18 +345,13 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                             }}
                             className="w-40 text-sm"
                           />
-                          {(() => {
-                            const { ref, isOver: isOverRef } = createValueDropRef(0);
-                            return (
-                              <div 
-                                ref={ref}
-                                className={`ml-2 h-6 w-6 rounded-full flex items-center justify-center border ${isOverRef ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
-                                title="Drop an operation here"
-                              >
-                                <span className="text-xs">+</span>
-                              </div>
-                            );
-                          })()}
+                          <div 
+                            ref={drop1}
+                            className={`ml-2 h-6 w-6 rounded-full flex items-center justify-center border ${isOver1 ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
+                            title="Drop an operation here"
+                          >
+                            <span className="text-xs">+</span>
+                          </div>
                         </div>
                       </div>
                     )}
@@ -371,18 +382,13 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                             }}
                             className="w-40 text-sm"
                           />
-                          {(() => {
-                            const { ref, isOver: isOverRef } = createValueDropRef(1);
-                            return (
-                              <div 
-                                ref={ref}
-                                className={`ml-2 h-6 w-6 rounded-full flex items-center justify-center border ${isOverRef ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
-                                title="Drop an operation here"
-                              >
-                                <span className="text-xs">+</span>
-                              </div>
-                            );
-                          })()}
+                          <div 
+                            ref={drop2}
+                            className={`ml-2 h-6 w-6 rounded-full flex items-center justify-center border ${isOver2 ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
+                            title="Drop an operation here"
+                          >
+                            <span className="text-xs">+</span>
+                          </div>
                         </div>
                       </div>
                     )}
@@ -426,19 +432,33 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                   ) : (
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium">Value {index + 1}:</span>
-                      <Input 
-                        value={item?.toString() || ''} 
-                        onChange={(e) => {
-                          const newValue = [...value];
-                          // Try to convert to number if possible
-                          const parsedValue = !isNaN(parseFloat(e.target.value)) 
-                            ? parseFloat(e.target.value) 
-                            : e.target.value;
-                          newValue[index] = parsedValue;
-                          onUpdate([...path, operationType], newValue);
-                        }}
-                        className="w-40 text-sm"
-                      />
+                      <div className="flex items-center gap-2">
+                        <Input 
+                          value={item?.toString() || ''} 
+                          onChange={(e) => {
+                            const newValue = [...value];
+                            // Try to convert to number if possible
+                            const parsedValue = !isNaN(parseFloat(e.target.value)) 
+                              ? parseFloat(e.target.value) 
+                              : e.target.value;
+                            newValue[index] = parsedValue;
+                            onUpdate([...path, operationType], newValue);
+                          }}
+                          className="w-40 text-sm"
+                        />
+                        <div 
+                          className={`ml-2 h-6 w-6 rounded-full flex items-center justify-center border border-neutral-300 cursor-pointer`}
+                          title="Replace with operation"
+                          onClick={() => {
+                            // Create a placeholder operation to replace this value
+                            const newValue = [...value];
+                            newValue[index] = { "var": "" };
+                            onUpdate([...path, operationType], newValue);
+                          }}
+                        >
+                          <span className="text-xs">+</span>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -489,16 +509,25 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                         onRemove={onRemove}
                       />
                     ) : (
-                      <Input 
-                        value={value[0]?.toString() || ''} 
-                        onChange={(e) => {
-                          const newValue = [...value];
-                          newValue[0] = e.target.value;
-                          onUpdate([...path, operationType], newValue);
-                        }}
-                        className="w-full text-sm"
-                        placeholder="Array variable (e.g. items)"
-                      />
+                      <div className="flex items-center gap-2">
+                        <Input 
+                          value={value[0]?.toString() || ''} 
+                          onChange={(e) => {
+                            const newValue = [...value];
+                            newValue[0] = e.target.value;
+                            onUpdate([...path, operationType], newValue);
+                          }}
+                          className="flex-1 text-sm"
+                          placeholder="Array variable (e.g. items)"
+                        />
+                        <div 
+                          ref={drop1}
+                          className={`h-6 w-6 rounded-full flex items-center justify-center border ${isOver1 ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
+                          title="Drop an operation here"
+                        >
+                          <span className="text-xs">+</span>
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -514,8 +543,13 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                         onRemove={onRemove}
                       />
                     ) : (
-                      <div className="flex justify-center p-2 text-neutral-500 text-sm border border-dashed border-neutral-300 rounded-md">
-                        Drop logic here
+                      <div 
+                        ref={drop2}
+                        className={`flex justify-center p-4 text-neutral-500 text-sm border-2 border-dashed ${isOver2 ? 'border-primary bg-primary/5' : 'border-neutral-300'} rounded-md cursor-pointer`}
+                      >
+                        <div className="text-center">
+                          <p>Drop logic here</p>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -552,20 +586,29 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                   onRemove={onRemove}
                 />
               ) : (
-                <Input 
-                  value={value[0]?.toString() || ''} 
-                  onChange={(e) => {
-                    const newValue = [...(Array.isArray(value) ? value : [])];
-                    // Try to convert to number if possible
-                    const parsedValue = !isNaN(parseFloat(e.target.value)) 
-                      ? parseFloat(e.target.value) 
-                      : e.target.value;
-                    newValue[0] = parsedValue;
-                    onUpdate([...path, operationType], newValue);
-                  }}
-                  className="w-full text-sm"
-                  placeholder="Enter a number"
-                />
+                <div className="flex items-center gap-2">
+                  <Input 
+                    value={value[0]?.toString() || ''} 
+                    onChange={(e) => {
+                      const newValue = [...(Array.isArray(value) ? value : [])];
+                      // Try to convert to number if possible
+                      const parsedValue = !isNaN(parseFloat(e.target.value)) 
+                        ? parseFloat(e.target.value) 
+                        : e.target.value;
+                      newValue[0] = parsedValue;
+                      onUpdate([...path, operationType], newValue);
+                    }}
+                    className="flex-1 text-sm"
+                    placeholder="Enter a number"
+                  />
+                  <div 
+                    ref={drop1}
+                    className={`h-6 w-6 rounded-full flex items-center justify-center border ${isOver1 ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
+                    title="Drop an operation here"
+                  >
+                    <span className="text-xs">+</span>
+                  </div>
+                </div>
               )}
             </div>
           </div>
