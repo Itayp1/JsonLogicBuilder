@@ -347,33 +347,40 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                         onRemove={onRemove}
                       />
                     ) : (
-                      <div className="flex items-center justify-between py-2">
-                        <div className="flex items-center gap-2">
-                          <Input 
-                            value={value[0]?.toString() || ''} 
-                            onChange={(e) => {
-                              const newValue = [...value];
-                              // Try to convert to number if possible
-                              const parsedValue = !isNaN(parseFloat(e.target.value)) 
-                                ? parseFloat(e.target.value) 
-                                : e.target.value;
-                              newValue[0] = parsedValue;
-                              onUpdate([...path, operationType], newValue);
-                            }}
-                            className="w-40 text-sm"
-                          />
-                          <div 
-                            ref={drop1}
-                            className={`ml-2 h-6 w-6 rounded-full flex items-center justify-center border ${isOver1 ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
-                            title="Drop an operation here"
-                            onClick={() => {
-                              // Replace with a placeholder operation
-                              const newValue = [...value];
-                              newValue[0] = { "var": "" };
-                              onUpdate([...path, operationType], newValue);
-                            }}
-                          >
-                            <span className="text-xs">+</span>
+                      <div 
+                        ref={drop1}
+                        className={`${isOver1 ? 'bg-primary/5 border-primary' : ''} rounded-md transition-colors duration-150`}
+                      >
+                        <div className="flex items-center justify-between py-2">
+                          <div className="flex items-center gap-2 w-full">
+                            <Input 
+                              value={value[0]?.toString() || ''} 
+                              onChange={(e) => {
+                                const newValue = [...value];
+                                // Try to convert to number if possible
+                                const parsedValue = !isNaN(parseFloat(e.target.value)) 
+                                  ? parseFloat(e.target.value) 
+                                  : e.target.value;
+                                newValue[0] = parsedValue;
+                                onUpdate([...path, operationType], newValue);
+                              }}
+                              className="w-full text-sm"
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              className="flex-shrink-0 h-8 px-2"
+                              title="Add operation as value"
+                              onClick={() => {
+                                // Replace with a placeholder operation
+                                const newValue = [...value];
+                                newValue[0] = { "var": "" };
+                                onUpdate([...path, operationType], newValue);
+                              }}
+                            >
+                              <span className="text-xs">+ Add operation</span>
+                            </Button>
                           </div>
                         </div>
                       </div>
@@ -390,33 +397,40 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                         onRemove={onRemove}
                       />
                     ) : (
-                      <div className="flex items-center justify-between py-2">
-                        <div className="flex items-center gap-2">
-                          <Input 
-                            value={value[1]?.toString() || ''} 
-                            onChange={(e) => {
-                              const newValue = [...value];
-                              // Try to convert to number if possible
-                              const parsedValue = !isNaN(parseFloat(e.target.value)) 
-                                ? parseFloat(e.target.value) 
-                                : e.target.value;
-                              newValue[1] = parsedValue;
-                              onUpdate([...path, operationType], newValue);
-                            }}
-                            className="w-40 text-sm"
-                          />
-                          <div 
-                            ref={drop2}
-                            className={`ml-2 h-6 w-6 rounded-full flex items-center justify-center border ${isOver2 ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
-                            title="Drop an operation here"
-                            onClick={() => {
-                              // Replace with a placeholder operation
-                              const newValue = [...value];
-                              newValue[1] = { "var": "" };
-                              onUpdate([...path, operationType], newValue);
-                            }}
-                          >
-                            <span className="text-xs">+</span>
+                      <div 
+                        ref={drop2}
+                        className={`${isOver2 ? 'bg-primary/5 border-primary' : ''} rounded-md transition-colors duration-150`}
+                      >
+                        <div className="flex items-center justify-between py-2">
+                          <div className="flex items-center gap-2 w-full">
+                            <Input 
+                              value={value[1]?.toString() || ''} 
+                              onChange={(e) => {
+                                const newValue = [...value];
+                                // Try to convert to number if possible
+                                const parsedValue = !isNaN(parseFloat(e.target.value)) 
+                                  ? parseFloat(e.target.value) 
+                                  : e.target.value;
+                                newValue[1] = parsedValue;
+                                onUpdate([...path, operationType], newValue);
+                              }}
+                              className="w-full text-sm"
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              className="flex-shrink-0 h-8 px-2"
+                              title="Add operation as value"
+                              onClick={() => {
+                                // Replace with a placeholder operation
+                                const newValue = [...value];
+                                newValue[1] = { "var": "" };
+                                onUpdate([...path, operationType], newValue);
+                              }}
+                            >
+                              <span className="text-xs">+ Add operation</span>
+                            </Button>
                           </div>
                         </div>
                       </div>
@@ -460,8 +474,8 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                     />
                   ) : (
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">Value {index + 1}:</span>
-                      <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium mr-2">Value {index + 1}:</span>
+                      <div className="flex items-center gap-2 flex-1">
                         <Input 
                           value={item?.toString() || ''} 
                           onChange={(e) => {
@@ -473,10 +487,13 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                             newValue[index] = parsedValue;
                             onUpdate([...path, operationType], newValue);
                           }}
-                          className="w-40 text-sm"
+                          className="flex-1 text-sm"
                         />
-                        <div 
-                          className={`ml-2 h-6 w-6 rounded-full flex items-center justify-center border border-neutral-300 cursor-pointer`}
+                        <Button
+                          type="button" 
+                          variant="outline"
+                          size="sm"
+                          className="h-8 px-2"
                           title="Replace with operation"
                           onClick={() => {
                             // Create a placeholder operation to replace this value
@@ -485,8 +502,8 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                             onUpdate([...path, operationType], newValue);
                           }}
                         >
-                          <span className="text-xs">+</span>
-                        </div>
+                          <span className="text-xs">+ Add operation</span>
+                        </Button>
                       </div>
                     </div>
                   )}
@@ -538,29 +555,36 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                         onRemove={onRemove}
                       />
                     ) : (
-                      <div className="flex items-center gap-2">
-                        <Input 
-                          value={value[0]?.toString() || ''} 
-                          onChange={(e) => {
-                            const newValue = [...value];
-                            newValue[0] = e.target.value;
-                            onUpdate([...path, operationType], newValue);
-                          }}
-                          className="flex-1 text-sm"
-                          placeholder="Array variable (e.g. items)"
-                        />
-                        <div 
-                          ref={drop1}
-                          className={`h-6 w-6 rounded-full flex items-center justify-center border ${isOver1 ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
-                          title="Drop an operation here"
-                          onClick={() => {
-                            // Replace with a placeholder operation
-                            const newValue = [...value];
-                            newValue[0] = { "var": "" };
-                            onUpdate([...path, operationType], newValue);
-                          }}
-                        >
-                          <span className="text-xs">+</span>
+                      <div 
+                        ref={drop1}
+                        className={`${isOver1 ? 'bg-primary/5 border-primary' : ''} rounded-md transition-colors duration-150`}
+                      >
+                        <div className="flex items-center gap-2 w-full">
+                          <Input 
+                            value={value[0]?.toString() || ''} 
+                            onChange={(e) => {
+                              const newValue = [...value];
+                              newValue[0] = e.target.value;
+                              onUpdate([...path, operationType], newValue);
+                            }}
+                            className="flex-1 text-sm"
+                            placeholder="Array variable (e.g. items)"
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="flex-shrink-0 h-8 px-2"
+                            title="Add operation as value"
+                            onClick={() => {
+                              // Replace with a placeholder operation
+                              const newValue = [...value];
+                              newValue[0] = { "var": "" };
+                              onUpdate([...path, operationType], newValue);
+                            }}
+                          >
+                            <span className="text-xs">+ Add operation</span>
+                          </Button>
                         </div>
                       </div>
                     )}
@@ -621,7 +645,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                   onRemove={onRemove}
                 />
               ) : (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 w-full">
                   <Input 
                     value={value[0]?.toString() || ''} 
                     onChange={(e) => {
@@ -636,10 +660,12 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                     className="flex-1 text-sm"
                     placeholder="Enter a number"
                   />
-                  <div 
-                    ref={drop1}
-                    className={`h-6 w-6 rounded-full flex items-center justify-center border ${isOver1 ? 'border-primary bg-primary/10' : 'border-neutral-300'} cursor-pointer`}
-                    title="Drop an operation here"
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="flex-shrink-0 h-8 px-2"
+                    title="Add operation as value"
                     onClick={() => {
                       // Replace with a placeholder operation
                       const newValue = [...(Array.isArray(value) ? value : [])];
@@ -647,8 +673,8 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                       onUpdate([...path, operationType], newValue);
                     }}
                   >
-                    <span className="text-xs">+</span>
-                  </div>
+                    <span className="text-xs">+ Add operation</span>
+                  </Button>
                 </div>
               )}
             </div>
@@ -698,7 +724,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                           onRemove={onRemove}
                         />
                       ) : (
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 w-full">
                           <Input 
                             value={item?.toString() || ''} 
                             onChange={(e) => {
@@ -712,9 +738,12 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                             }}
                             className="flex-1 text-sm"
                           />
-                          <div 
-                            className="h-6 w-6 rounded-full flex items-center justify-center border border-neutral-300 cursor-pointer"
-                            title="Replace with operation"
+                          <Button
+                            type="button" 
+                            variant="outline"
+                            size="sm"
+                            className="flex-shrink-0 h-8 px-2"
+                            title="Add operation as value"
                             onClick={() => {
                               // Replace with a placeholder operation
                               const newValue = [...value];
@@ -722,8 +751,8 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                               onUpdate([...path, operationType], newValue);
                             }}
                           >
-                            <span className="text-xs">+</span>
-                          </div>
+                            <span className="text-xs">+ Add operation</span>
+                          </Button>
                         </div>
                       )}
                     </div>
