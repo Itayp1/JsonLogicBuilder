@@ -335,107 +335,105 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
             </div>
 
             {Array.isArray(value) && (
-              <div className="flex flex-col gap-2">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="border rounded-md p-2 border-neutral-200 relative min-w-[300px] flex-1">
-                    <div className="absolute -top-3 left-2 bg-white px-1 text-xs text-neutral-500">Value 1</div>
-                    {value.length > 0 && typeof value[0] === 'object' ? (
-                      <LogicNode 
-                        node={value[0]} 
-                        path={[...path, operationType, '0']} 
-                        onUpdate={onUpdate}
-                        onRemove={onRemove}
-                      />
-                    ) : (
-                      <div 
-                        ref={drop1}
-                        className={`${isOver1 ? 'bg-primary/5 border-primary' : ''} rounded-md transition-colors duration-150`}
-                      >
-                        <div className="flex flex-col py-2">
-                          <div className="flex flex-col sm:flex-row gap-2 w-full">
-                            <Input 
-                              value={value[0]?.toString() || ''} 
-                              onChange={(e) => {
-                                const newValue = [...value];
-                                // Try to convert to number if possible
-                                const parsedValue = !isNaN(parseFloat(e.target.value)) 
-                                  ? parseFloat(e.target.value) 
-                                  : e.target.value;
-                                newValue[0] = parsedValue;
-                                onUpdate([...path, operationType], newValue);
-                              }}
-                              className="w-full text-sm"
-                            />
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="sm"
-                              className="flex-shrink-0 h-8 sm:w-auto w-full mt-1 sm:mt-0"
-                              title="Add operation as value"
-                              onClick={() => {
-                                // Replace with a placeholder operation
-                                const newValue = [...value];
-                                newValue[0] = { "var": "" };
-                                onUpdate([...path, operationType], newValue);
-                              }}
-                            >
-                              <span className="text-xs">+ Add operation</span>
-                            </Button>
-                          </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                <div className="border rounded-md p-2 border-neutral-200 relative min-w-[300px] flex-1">
+                  <div className="absolute -top-3 left-2 bg-white px-1 text-xs text-neutral-500">Value 1</div>
+                  {value.length > 0 && typeof value[0] === 'object' ? (
+                    <LogicNode 
+                      node={value[0]} 
+                      path={[...path, operationType, '0']} 
+                      onUpdate={onUpdate}
+                      onRemove={onRemove}
+                    />
+                  ) : (
+                    <div 
+                      ref={drop1}
+                      className={`${isOver1 ? 'bg-primary/5 border-primary' : ''} rounded-md transition-colors duration-150`}
+                    >
+                      <div className="flex flex-col py-2">
+                        <div className="flex flex-col sm:flex-row gap-2 w-full">
+                          <Input 
+                            value={value[0]?.toString() || ''} 
+                            onChange={(e) => {
+                              const newValue = [...value];
+                              // Try to convert to number if possible
+                              const parsedValue = !isNaN(parseFloat(e.target.value)) 
+                                ? parseFloat(e.target.value) 
+                                : e.target.value;
+                              newValue[0] = parsedValue;
+                              onUpdate([...path, operationType], newValue);
+                            }}
+                            className="w-full text-sm"
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="flex-shrink-0 h-8 sm:w-auto w-full mt-1 sm:mt-0"
+                            title="Add operation as value"
+                            onClick={() => {
+                              // Replace with a placeholder operation
+                              const newValue = [...value];
+                              newValue[0] = { "var": "" };
+                              onUpdate([...path, operationType], newValue);
+                            }}
+                          >
+                            <span className="text-xs">+ Add operation</span>
+                          </Button>
                         </div>
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
+                </div>
 
-                  <div className="border rounded-md p-2 border-neutral-200 relative min-w-[300px] flex-1">
-                    <div className="absolute -top-3 left-2 bg-white px-1 text-xs text-neutral-500">Value 2</div>
-                    {value.length > 1 && typeof value[1] === 'object' ? (
-                      <LogicNode 
-                        node={value[1]} 
-                        path={[...path, operationType, '1']} 
-                        onUpdate={onUpdate}
-                        onRemove={onRemove}
-                      />
-                    ) : (
-                      <div 
-                        ref={drop2}
-                        className={`${isOver2 ? 'bg-primary/5 border-primary' : ''} rounded-md transition-colors duration-150`}
-                      >
-                        <div className="flex flex-col py-2">
-                          <div className="flex flex-col sm:flex-row gap-2 w-full">
-                            <Input 
-                              value={value[1]?.toString() || ''} 
-                              onChange={(e) => {
-                                const newValue = [...value];
-                                // Try to convert to number if possible
-                                const parsedValue = !isNaN(parseFloat(e.target.value)) 
-                                  ? parseFloat(e.target.value) 
-                                  : e.target.value;
-                                newValue[1] = parsedValue;
-                                onUpdate([...path, operationType], newValue);
-                              }}
-                              className="w-full text-sm"
-                            />
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="sm"
-                              className="flex-shrink-0 h-8 sm:w-auto w-full mt-1 sm:mt-0"
-                              title="Add operation as value"
-                              onClick={() => {
-                                // Replace with a placeholder operation
-                                const newValue = [...value];
-                                newValue[1] = { "var": "" };
-                                onUpdate([...path, operationType], newValue);
-                              }}
-                            >
-                              <span className="text-xs">+ Add operation</span>
-                            </Button>
-                          </div>
+                <div className="border rounded-md p-2 border-neutral-200 relative min-w-[300px] flex-1">
+                  <div className="absolute -top-3 left-2 bg-white px-1 text-xs text-neutral-500">Value 2</div>
+                  {value.length > 1 && typeof value[1] === 'object' ? (
+                    <LogicNode 
+                      node={value[1]} 
+                      path={[...path, operationType, '1']} 
+                      onUpdate={onUpdate}
+                      onRemove={onRemove}
+                    />
+                  ) : (
+                    <div 
+                      ref={drop2}
+                      className={`${isOver2 ? 'bg-primary/5 border-primary' : ''} rounded-md transition-colors duration-150`}
+                    >
+                      <div className="flex flex-col py-2">
+                        <div className="flex flex-col sm:flex-row gap-2 w-full">
+                          <Input 
+                            value={value[1]?.toString() || ''} 
+                            onChange={(e) => {
+                              const newValue = [...value];
+                              // Try to convert to number if possible
+                              const parsedValue = !isNaN(parseFloat(e.target.value)) 
+                                ? parseFloat(e.target.value) 
+                                : e.target.value;
+                              newValue[1] = parsedValue;
+                              onUpdate([...path, operationType], newValue);
+                            }}
+                            className="w-full text-sm"
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="flex-shrink-0 h-8 sm:w-auto w-full mt-1 sm:mt-0"
+                            title="Add operation as value"
+                            onClick={() => {
+                              // Replace with a placeholder operation
+                              const newValue = [...value];
+                              newValue[1] = { "var": "" };
+                              onUpdate([...path, operationType], newValue);
+                            }}
+                          >
+                            <span className="text-xs">+ Add operation</span>
+                          </Button>
                         </div>
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -462,7 +460,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
               </Button>
             </div>
 
-            <div className="space-y-2 mt-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
               {Array.isArray(value) && value.map((item, index) => (
                 <div key={index} className="border rounded-md p-2 border-neutral-200 min-w-[300px] flex-1">
                   {typeof item === 'object' ? (
@@ -543,7 +541,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
             </div>
 
             {Array.isArray(value) && (
-              <div className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
                 <div>
                   <div className="text-sm font-medium text-neutral-600 mb-1">Array:</div>
                   <div className="border rounded-md p-2 border-neutral-200 min-w-[300px] flex-1">
@@ -710,7 +708,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
             </div>
 
             {Array.isArray(value) && (
-              <div className="flex flex-col gap-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
                 <div className="border rounded-md p-3 border-neutral-200 min-w-[300px] flex-1">
                   <div className="font-medium text-sm mb-2">Arguments:</div>
                   {value.map((item, index) => (
@@ -816,7 +814,7 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
   };
 
   // Increase margin as nesting gets deeper
-  const getMarginClass = () => {
+  const getMarginClass = () =>{
     if (nestingLevel === 0) return '';
 
     //    // Use predefined margin classes
@@ -838,9 +836,11 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
         ${getPaddingClass()}
         ${getMarginClass()}
         rounded-md
-        max-w-full
-        overflow-x-auto
+        w-full
+        min-w-[300px]
         break-words
+        shadow-sm
+        border border-neutral-200
       `}
     >
       <div className="flex flex-wrap items-start relative">
