@@ -22,6 +22,9 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
 
   const operation = findOperationByType(operationType);
   if (!operation) return null;
+  
+  // Calculate the nesting level to add appropriate visual cues
+  const nestingLevel = path.length;
 
   // Main drop zone for the node
   const [{ isOver }, drop] = useDrop(() => ({
@@ -639,10 +642,18 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
         );
 
       default:
+        // For our custom operations and other operations that take array arguments
         return (
           <div className="flex-1">
             <div className="flex items-center mb-2">
-              <h4 className="font-medium text-neutral-800">{operationType}</h4>
+              <h4 className="font-medium text-neutral-800">
+                {operation ? operation.name : operationType}
+                {operation?.isCustom && (
+                  <span className="ml-2 text-xs px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded-full">
+                    Custom
+                  </span>
+                )}
+              </h4>
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -652,22 +663,120 @@ export default function LogicNode({ node, path, onUpdate, onRemove }: LogicNodeP
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
-            <div className="text-sm text-neutral-500">
-              {JSON.stringify(value)}
-            </div>
+            
+            {Array.isArray(value) && (
+              <div className="flex flex-col gap-2">
+                <div className="border rounded-md p-3 border-neutral-200">
+                  <div className="font-medium text-sm mb-2">Arguments:</div>
+                  {value.map((item, index) => (
+                    <div key={index} className="mb-2 border-b pb-2 last:border-0 last:pb-0">
+                      <div className="flex items-center justify-between">
+                        <div className="text-xs text-neutral-500 mb-1">Argument {index + 1}</div>
+                      </div>
+                      {typeof item === 'object' ? (
+                        <LogicNode 
+                          node={item} 
+                          path={[...path, operationType, index.toString()]} 
+                          onUpdate={onUpdate}
+                          onRemove={onRemove}
+                        />
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <Input 
+                            value={item?.toString() || ''} 
+                            onChange={(e) => {
+                              const newValue = [...value];
+                              // Try to convert to number if possible
+                              const parsedValue = !isNaN(parseFloat(e.target.value)) 
+                                ? parseFloat(e.target.value) 
+                                : e.target.value;
+                              newValue[index] = parsedValue;
+                              onUpdate([...path, operationType], newValue);
+                            }}
+                            className="flex-1 text-sm"
+                          />
+                          <div 
+                            className="h-6 w-6 rounded-full flex items-center justify-center border border-neutral-300 cursor-pointer"
+                            title="Replace with operation"
+                            onClick={() => {
+                              // Replace with a placeholder operation
+                              const newValue = [...value];
+                              newValue[index] = { "var": "" };
+                              onUpdate([...path, operationType], newValue);
+                            }}
+                          >
+                            <span className="text-xs">+</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  
+                  {/* Button to add more arguments if needed */}
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="mt-2 w-full text-neutral-600"
+                    onClick={() => {
+                      const newValue = [...value, ""];
+                      onUpdate([...path, operationType], newValue);
+                    }}
+                  >
+                    + Add Argument
+                  </Button>
+                </div>
+              </div>
+            )}
+            
+            {/* For non-array values, display the JSON */}
+            {!Array.isArray(value) && (
+              <div className="text-sm text-neutral-500 p-2 bg-neutral-50 rounded-md">
+                {JSON.stringify(value)}
+              </div>
+            )}
           </div>
         );
     }
   };
 
+  // Calculate box shadow based on nesting level for better visual hierarchy
+  const getShadowClass = () => {
+    // Only add shadow for nested nodes
+    if (nestingLevel > 0) {
+      return 'shadow-sm';
+    }
+    return '';
+  };
+  
+  // Add a left border with increasing intensity based on nesting level
+  const getBorderClass = () => {
+    const intensity = Math.min(nestingLevel * 100, 800);
+    return nestingLevel > 0 ? `border-l-4 border-l-primary-${intensity}` : '';
+  };
+  
   return (
-    <div className={`${getCategoryColorClasses()} rounded-md p-4`}>
+    <div 
+      className={`
+        ${getCategoryColorClasses()} 
+        ${getShadowClass()}
+        ${getBorderClass()}
+        rounded-md p-4
+        ${nestingLevel > 0 ? 'my-2' : ''}
+      `}
+    >
       <div className="flex items-start">
-        <div className={`${getIconColorClasses()} rounded p-1 mr-3 mt-1`}>
+        <div className={`${getIconColorClasses()} rounded p-1.5 mr-3 mt-1`}>
           <i className={`ri-${operation.icon}`}></i>
         </div>
         {renderNodeContent()}
       </div>
+      
+      {/* Add a nesting indicator for debug purposes */}
+      {nestingLevel > 0 && (
+        <div className="mt-1 text-xs text-neutral-400 text-right">
+          Nesting level: {nestingLevel}
+        </div>
+      )}
     </div>
   );
 }

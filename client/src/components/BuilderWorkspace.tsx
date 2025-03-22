@@ -105,13 +105,15 @@ export default function BuilderWorkspace({
             </div>
           </div>
         ) : (
-          <div className="mt-0 border border-neutral-200 rounded-lg bg-white p-5 shadow-sm">
-            <LogicNode 
-              node={jsonLogic} 
-              path={[]} 
-              onUpdate={onUpdateOperation}
-              onRemove={onRemoveOperation}
-            />
+          <div className="mt-0 border border-neutral-200 rounded-lg bg-white p-6 shadow-sm overflow-auto">
+            <div className="min-w-[600px]">
+              <LogicNode 
+                node={jsonLogic} 
+                path={[]} 
+                onUpdate={onUpdateOperation}
+                onRemove={onRemoveOperation}
+              />
+            </div>
           </div>
         )}
       </div>
