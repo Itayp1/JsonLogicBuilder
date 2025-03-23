@@ -1,10 +1,11 @@
+
 import { useState } from "react";
-import Header from "@/components/Header";
-import OperationsPanel from "@/components/OperationsPanel";
-import BuilderWorkspace from "@/components/BuilderWorkspace";
-import JsonPreview from "@/components/JsonPreview";
-import ImportModal from "@/components/ImportModal";
-import { useJsonLogicBuilder } from "@/lib/useJsonLogicBuilder";
+import Header from "../components/Header";
+import OperationsPanel from "../components/OperationsPanel";
+import BuilderWorkspace from "../components/BuilderWorkspace";
+import JsonPreview from "../components/JsonPreview";
+import ImportModal from "../components/ImportModal";
+import { useJsonLogicBuilder } from "../lib/useJsonLogicBuilder";
 
 export default function JsonLogicBuilder() {
   const {
@@ -19,32 +20,6 @@ export default function JsonLogicBuilder() {
     validateLogic
   } = useJsonLogicBuilder();
   
-  // Function to create a complex example with nested operations
-  const createComplexExample = () => {
-    // Create a complex example with nested operations including the custom "length" operation
-    // This builds a logic that checks if the length of value in variable "number" is equal to 
-    // the result of addition(max([data.threshold]), multiply(5, 2))
-    const exampleLogic = {
-      "==": [
-        { "length": [{ "var": "number" }] },
-        { "+": [
-            { "max": [{ "var": "threshold" }] },
-            { "*": [5, 2] }
-          ]
-        }
-      ]
-    };
-    
-    // Update the JSON logic
-    setJsonLogic(exampleLogic);
-    
-    // Set test data that includes both variables
-    setTestData(JSON.stringify({
-      "number": 12345,
-      "threshold": 3
-    }, null, 2));
-  };
-
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [testData, setTestData] = useState<string>('{"age": 25, "name": "John"}');
   const [testResult, setTestResult] = useState<string | null>(null);
@@ -70,6 +45,24 @@ export default function JsonLogicBuilder() {
 
   const handleCopyJson = () => {
     navigator.clipboard.writeText(jsonLogicString);
+  };
+
+  const createComplexExample = () => {
+    const exampleLogic = {
+      "==": [
+        { "length": [{ "var": "number" }] },
+        { "+": [
+            { "max": [{ "var": "threshold" }] },
+            { "*": [5, 2] }
+          ]
+        }
+      ]
+    };
+    setJsonLogic(exampleLogic);
+    setTestData(JSON.stringify({
+      "number": 12345,
+      "threshold": [1, 2, 3]
+    }, null, 2));
   };
 
   return (
